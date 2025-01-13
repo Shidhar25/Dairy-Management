@@ -18,8 +18,7 @@ public:
         int n = name.size();
         for (int i = 0; i < n; i++) {
             if (name[i] == tgt) {
-                cout << "Found. ID is: " << id[i] << endl;
-                cout << " Name is: " << name[i] << endl << " Name is: " << date[i]<< endl << " Name is: " << time[i];
+                cout << "Found. ID is: " << id[i] << endl << " Name is: " << name[i] << endl << " Name is: " << date[i]<< endl << " Name is: " << time[i];
                 found = true;
             }
         }
