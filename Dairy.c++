@@ -1,138 +1,124 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 using namespace std;
 
 class Person {
 private:
     vector<int> id;
     vector<string> name;
+    vector<string> type;
     vector<string> date;
     vector<string> time;
 
 public:
-    Person(vector<int> id, vector<string> name, vector<string> date, vector<string> time) : id(id), name(name), date(date), time(time) {}
+    Person() {}
 
-    void searchPerson(string tgt) {
+    void addPerson() {
+        int personID;
+        string personName, personType, personDate, personTime;
+        cout << "\n--- Add New Person ---\n";
+        cout << "Enter ID: ";
+        while (!(cin >> personID)) {
+            cout << "Invalid input. Please enter a numeric ID: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        cout << "Enter Name: ";
+        cin.ignore();
+        getline(cin, personName);
+        cout << "Enter Type (e.g., Visitor/Staff): ";
+        getline(cin, personType);
+        cout << "Enter Date (YYYY-MM-DD): ";
+        getline(cin, personDate);
+        cout << "Enter Time (HH:MM): ";
+        getline(cin, personTime);
+
+        id.push_back(personID);
+        name.push_back(personName);
+        type.push_back(personType);
+        date.push_back(personDate);
+        time.push_back(personTime);
+        cout << "Person added successfully!\n";
+    }
+
+    void searchPerson() {
+        if (name.empty()) {
+            cout << "No records available to search.\n";
+            return;
+        }
+
+        string tgt;
+        cout << "Enter name to search: ";
+        cin.ignore();
+        getline(cin, tgt);
+
         bool found = false;
         for (size_t i = 0; i < name.size(); i++) {
             if (name[i] == tgt) {
-                cout << "Found. ID is: " << id[i] << endl << " Name is: " << name[i] << endl << " Date is: " << date[i] << endl << " Time is: " << time[i];
+                cout << "\n--- Person Found ---\n";
+                cout << "ID: " << id[i] << "\n";
+                cout << "Name: " << name[i] << "\n";
+                cout << "Type: " << type[i] << "\n";
+                cout << "Date: " << date[i] << "\n";
+                cout << "Time: " << time[i] << "\n";
                 found = true;
+                break;
             }
         }
         if (!found) {
-            cout << "Result not found";
+            cout << "Person not found.\n";
         }
     }
 
-    void addData(vector<int>& id, vector<string>& name, vector<string>& date, vector<string>& time) {
-        int newId;
-        string newName, newDate, newTime;
-        cout << "Enter new ID: ";
-        cin >> newId;
-        cout << "Enter new Name: ";
-        cin >> newName;
-        cout << "Enter new Date: ";
-        cin >> newDate;
-        cout << "Enter new Time: ";
-        cin >> newTime;
-        id.push_back(newId);
-        name.push_back(newName);
-        date.push_back(newDate);
-        time.push_back(newTime);
-    }
+    void displayAllPersons() {
+        if (name.empty()) {
+            cout << "No records to display.\n";
+            return;
+        }
 
-    void viewData() {
+        cout << "\n--- All Persons ---\n";
         for (size_t i = 0; i < name.size(); i++) {
-            cout << "ID is: " << id[i] << endl << " Name is: " << name[i] << endl << " Date is: " << date[i] << endl << " Time is: " << time[i] << endl;
-        }
-    }
-
-    void updateData(string tgt) {
-        bool found = false;
-        for (size_t i = 0; i < name.size(); i++) {
-            if (name[i] == tgt) {
-                cout << "Enter new ID: ";
-                cin >> id[i];
-                cout << "Enter new Name: ";
-                cin >> name[i];
-                cout << "Enter new Date: ";
-                cin >> date[i];
-                cout << "Enter new Time: ";
-                cin >> time[i];
-                found = true;
-            }
-        }
-        if (!found) {
-            cout << "Result not found";
+            cout << "\nPerson " << i + 1 << ":\n";
+            cout << "ID: " << id[i] << "\n";
+            cout << "Name: " << name[i] << "\n";
+            cout << "Type: " << type[i] << "\n";
+            cout << "Date: " << date[i] << "\n";
+            cout << "Time: " << time[i] << "\n";
         }
     }
 };
 
 int main() {
-    int n;
-    cout << "Enter the number of persons: ";
-    cin >> n;
-    vector<int> id(n);
-    vector<string> name(n);
-    vector<string> date(n);
-    vector<string> time(n);
-    cout << "Enter IDs, names, dates, and times: " << endl;
-    for (int i = 0; i < n; i++) {
-        cout << endl;
-        cout << "------------------------Person No :" << i + 1 << "------------------------" << endl;
-        cout << endl;
-        cout << "Enter ID :";
-        cin >> id[i];
-        cout << endl;
-        cout << "Enter Name :";
-        cin >> name[i];
-        cout << endl;
-        cout << "Enter Date :";
-        cin >> date[i];
-        cout << endl;
-        cout << "Enter Time :";
-        cin >> time[i]; 
-        cout << endl;
-    }
-    Person person(id, name, date, time);
+    Person person;
     int choice;
-    cout << "Choose an option: \n1. Add Data\n2. View Data\n3. Update Data\n4. Search Person\n5. Exit" << endl;
-    cin >> choice;
-    while (choice != 5) {
-        switch (choice) {
-            case 1: {
-                person.addData(id, name, date, time);
-                cout << endl;
-                break;
-            }
-            case 2: {
-                person.viewData();
-                cout << endl;
-                break;
-            }
-            case 3: {
-                string tgt;
-                cout << "Enter name to update: ";
-                cin >> tgt;
-                person.updateData(tgt);
-                cout << endl;
-                break;
-            }
-            case 4: {
-                string tgt;
-                cout << "Enter name to search: ";
-                cin >> tgt;
-                person.searchPerson(tgt);
-                cout << endl;
-                break;
-            }
-            default: {
-                cout << "Invalid choice. Please choose a valid option." << endl;
-            }
-        }
-        cout << "Choose an option: \n1. Add Data\n2. View Data\n3. Update Data\n4. Search Person\n5. Exit" << endl;
+
+    do {
+        cout << "\n--- Person Management System ---\n";
+        cout << "1. Add Person\n";
+        cout << "2. Search Person\n";
+        cout << "3. Display All Persons\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
         cin >> choice;
-    }
+
+        switch (choice) {
+            case 1:
+                person.addPerson();
+                break;
+            case 2:
+                person.searchPerson();
+                break;
+            case 3:
+                person.displayAllPersons();
+                break;
+            case 4:
+                cout << "Exiting program. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter a valid option.\n";
+        }
+    } while (choice != 4);
+
     return 0;
 }
